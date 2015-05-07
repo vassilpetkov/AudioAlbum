@@ -48,4 +48,40 @@ class AccountsModel extends BaseModel{
         }
         return true;
     }
+
+    public function changeUsername($username) {
+        if ($username == '') {
+            return false;
+        }
+        if ($this->find($username)) {
+            return false;
+        }
+
+        $user = $this->find($_SESSION['username']);
+        $userId = $user['id'];
+
+        $statement = self::$db->prepare(
+            "UPDATE users SET username = ? WHERE id = ?");
+        $statement->bind_param("si", $username, $userId);
+        $statement->execute();
+        return true;
+    }
+
+    public function changePassword($oldPassword, $password) {
+        if ($password == '') {
+            return false;
+        }
+        $user = $this->find($_SESSION['username']);
+        if (!password_verify($oldPassword, $user['pass_hash'])) {
+            return false;
+        }
+        $userId = $user['id'];
+        $hash_pass = password_hash($password, PASSWORD_BCRYPT);
+
+        $statement = self::$db->prepare(
+            "UPDATE users SET pass_hash = ? WHERE id = ?");
+        $statement->bind_param("si", $hash_pass, $userId);
+        $statement->execute();
+        return true;
+    }
 }
