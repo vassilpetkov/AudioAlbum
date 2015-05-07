@@ -1,12 +1,12 @@
 
 --
--- Dumping data for table `artists`
+-- Dumping data for table `playlists`
 --
 
 LOCK TABLES `artists` WRITE;
-/*!40000 ALTER TABLE `artists` DISABLE KEYS */;
+/*!40000 ALTER TABLE `playlists` DISABLE KEYS */;
 INSERT INTO `artists` VALUES (1,'Pesho'),(2,'Kiro'),(3,'Maria'),(6,'Nakov');
-/*!40000 ALTER TABLE `artists` ENABLE KEYS */;
+/*!40000 ALTER TABLE `playlists` ENABLE KEYS */;
 UNLOCK TABLES;
 
 --

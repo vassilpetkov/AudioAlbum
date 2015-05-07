@@ -9,7 +9,7 @@ class ArtistsController extends BaseController {
     }
 
     public function index() {
-        $this->authors = $this->artistsModel->getAll();
+        $this->artists = $this->artistsModel->getAll();
     }
 
     public function create() {
@@ -26,7 +26,6 @@ class ArtistsController extends BaseController {
 
     public function edit($id) {
         if ($this->isPost()) {
-            // Edit the author in the database
             $name = $_POST['name'];
             if ($this->artistsModel->edit($id, $name)) {
                 $this->addInfoMessage("Artist edited.");
@@ -36,9 +35,8 @@ class ArtistsController extends BaseController {
             }
         }
 
-        // Display edit author form
-        $this->author = $this->artistsModel->find($id);
-        if (!$this->author) {
+        $this->artists = $this->artistsModel->find($id);
+        if (!$this->artist) {
             $this->addErrorMessage("Invalid artist.");
             $this->redirect("artists");
         }

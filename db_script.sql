@@ -26,7 +26,7 @@ DROP TABLE IF EXISTS `artists`;
 /*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `artists` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
-  `name` varchar(200) NOT NULL,
+  `artist_name` varchar(200) NOT NULL,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=24 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
@@ -40,7 +40,7 @@ DROP TABLE IF EXISTS `genres`;
 /*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `genres` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
-  `name` varchar(200) NOT NULL,
+  `genre_name` varchar(200) NOT NULL,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
@@ -95,25 +95,13 @@ DROP TABLE IF EXISTS `playlists`;
 /*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `playlists` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
-  `name` varchar(200) NOT NULL,
-  PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8;
-/*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Table structure for table `users_playlists`
---
-
-DROP TABLE IF EXISTS `users_playlists`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
-CREATE TABLE `users_playlists` (
-  `user_id` int(11) NOT NULL,
-  `playlist_id` int(11) NOT NULL,
-  KEY `fk_users_users_playlists_idx` (`user_id`),
-  CONSTRAINT `fk_users_users_playlists` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION,
-  KEY `fk_playlists_users_playlists_idx` (`playlist_id`),
-  CONSTRAINT `fk_playlists_users_playlists` FOREIGN KEY (`playlist_id`) REFERENCES `playlists` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION
+  `playlist_name` varchar(200) NOT NULL,
+  `author_id` int(11) NOT NULL,
+  `rating_votes` int(20) DEFAULT NULL,
+  `rating_score` int(20) DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  KEY `fk_playlists_users_idx` (`creator_id`),
+  CONSTRAINT `fk_playlists_users` FOREIGN KEY (`creator_id`) REFERENCES `users` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION
 ) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -135,32 +123,41 @@ CREATE TABLE `users` (
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
--- Table structure for table `users_comments`
+-- Table structure for table `song_comments`
 --
 
-DROP TABLE IF EXISTS `users_comments`;
+DROP TABLE IF EXISTS `songs_comments`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8 */;
-CREATE TABLE `users_comments` (
+CREATE TABLE `songs_comments` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `text` varchar(300) NOT NULL,
   `user_id` int(11) NOT NULL,
-  `comment_id` int(11) NOT NULL,
-  KEY `fk_users_users_comments_idx` (`user_id`),
-  CONSTRAINT `fk_users_comments_users` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION,
-  KEY `fk_comments_users_comments_idx` (`comment_id`),
-  CONSTRAINT `fk_comments_users_comments` FOREIGN KEY (`comment_id`) REFERENCES `comments` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION
+  `song_id` int(11) NOT NULL,
+  PRIMARY KEY (`id`),
+  KEY `fk_song_comments_users_idx` (`user_id`),
+  CONSTRAINT `fk_song_comments_users` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION,
+  KEY `fk_song_song_comments_songs_idx` (`song_id`),
+  CONSTRAINT `fk_comments_songs` FOREIGN KEY (`song_id`) REFERENCES `songs` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION
 ) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
--- Table structure for table `comments`
+-- Table structure for table `playlist_comments`
 --
 
-DROP TABLE IF EXISTS `comments`;
+DROP TABLE IF EXISTS `playlists_comments`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8 */;
-CREATE TABLE `comments` (
+CREATE TABLE `playlists_comments` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `text` varchar(300) NOT NULL,
-  PRIMARY KEY (`id`)
+  `user_id` int(11) NOT NULL,
+  `playlist_id` int(11) NOT NULL,
+  PRIMARY KEY (`id`),
+  KEY `fk_playlist_comments_users_idx` (`user_id`),
+  CONSTRAINT `fk_playlist_comments_users` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION,
+  KEY `fk_playlist_comments_songs_idx` (`playlist_id`),
+  CONSTRAINT `fk_playlist_comments_songs` FOREIGN KEY (`playlist_id`) REFERENCES `playlists` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION
 ) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;

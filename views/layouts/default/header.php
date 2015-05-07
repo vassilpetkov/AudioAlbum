@@ -11,7 +11,8 @@
         <a href="/"><img src="/content/images/site-logo.png"></a>
         <ul class="menu">
             <li><a href="/">Home</a></li>
-            <li><a href="/artists">Artists</a></li>
+            <li><a href="/playlists">Playlists</a></li>
+            <li><a href="/genres">Genres</a></li>
             <li><a href="/songs">Songs</a></li>
         </ul>
         <?php if(!$this->isLoggedIn()) : ?>
