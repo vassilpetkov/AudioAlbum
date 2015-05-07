@@ -30,4 +30,4 @@
     <?php endforeach ?>
 </table>
 
-<a href="/songs/create">[Create New]</a>
+<a href="/songs/upload">[Upload New]</a>

@@ -14,6 +14,14 @@ class ArtistsModel extends BaseModel {
         return $statement->get_result()->fetch_assoc();
     }
 
+    public function findByName($artist_name) {
+        $statement = self::$db->prepare(
+            "SELECT * FROM artists WHERE artist_name = ?");
+        $statement->bind_param("s", $artist_name);
+        $statement->execute();
+        return $statement->get_result()->fetch_assoc();
+    }
+
     public function create($name) {
         if ($name == '') {
             return false;

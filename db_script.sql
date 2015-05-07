@@ -58,7 +58,7 @@ CREATE TABLE `songs` (
   `artist_id` int(11) DEFAULT NULL,
   `genre_id` int(11) DEFAULT NULL,
   `year` int(4) DEFAULT NULL,
-  `location_in_system` varchar(200) NOT NULL,
+  `path` varchar(200) NOT NULL,
   `rating_votes` int(20) DEFAULT NULL,
   `rating_score` int(20) DEFAULT NULL,
   PRIMARY KEY (`id`),

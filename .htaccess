@@ -4,4 +4,6 @@
     RewriteCond %{REQUEST_URI} !^/content/.*$
     RewriteCond %{REQUEST_URI} !^/favicon\.ico$
     RewriteRule ^ index.php
+    php_value post_max_size 50M
+    php_value upload_max_filesize 50M
 </IfModule>

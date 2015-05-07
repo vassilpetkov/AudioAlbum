@@ -14,6 +14,14 @@ class GenresModel extends BaseModel {
         return $statement->get_result()->fetch_assoc();
     }
 
+    public function findByName($genre_name) {
+        $statement = self::$db->prepare(
+            "SELECT * FROM genres WHERE genre_name = ?");
+        $statement->bind_param("s", $genre_name);
+        $statement->execute();
+        return $statement->get_result()->fetch_assoc();
+    }
+
     public function create($name) {
         if ($name == '') {
             return false;
