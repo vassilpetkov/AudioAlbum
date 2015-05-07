@@ -83,6 +83,30 @@ class SongsController extends BaseController {
         }
     }
 
+    public function download($id) {
+        $song = $this->songsModel->find($id);
+        $downloadPath = $str = substr($song["path"], 1);
+        if (file_exists($downloadPath)) {
+            header('Content-Description: File Transfer');
+            header('Content-Type: application/octet-stream');
+            header('Content-Disposition: attachment; filename='.basename($downloadPath));
+            header('Expires: 0');
+            header('Cache-Control: must-revalidate');
+            header('Pragma: public');
+            header('Content-Length: ' . filesize($downloadPath));
+            if (readfile($downloadPath)) {
+                $this->addInfoMessage("Song downloaded.");
+            }
+            else {
+                $this->addErrorMessage("Cannot download song.");
+            }
+        }
+        else {
+            $this->addErrorMessage("Song not found.");
+        }
+        $this->redirect("songs");
+    }
+
     public function edit($id) {
         if ($this->isPost()) {
             $name = $_POST['name'];
