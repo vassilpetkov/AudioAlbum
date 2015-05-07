@@ -12,15 +12,8 @@ class SongsController extends BaseController {
         $this->songs = $this->songsModel->getAll();
     }
 
-    public function create($title, $artist_name, $genre_name, $year, $target_file) {
-        if ($this->isPost()) {
-            if ($this->songsModel->create($name)) {
-                $this->addInfoMessage("Song created.");
-                $this->redirect("songs");
-            } else {
-                $this->addErrorMessage("Cannot create song.");
-            }
-        }
+    public function play($id) {
+        $this->song = $this->songsModel->find($id);
     }
 
     public  function upload() {
@@ -31,8 +24,8 @@ class SongsController extends BaseController {
             $year = (int)$_POST['year'];
             $target_dir = "content/songs/";
             $target_file = $target_dir . basename($_FILES["fileToUpload"]["name"]);
+            $target_file_url = "/" . $target_file;
             $fileType = pathinfo($target_file,PATHINFO_EXTENSION);
-
             if (file_exists($target_file)) {
                 $this->addErrorMessage("The file already exists.");
                 $this->redirect("songs/upload");
@@ -67,7 +60,7 @@ class SongsController extends BaseController {
                 die();
             }
 
-            $dbQueryResult = $this->songsModel->create($title, $artist_name, $genre_name, $year, $target_file);
+            $dbQueryResult = $this->songsModel->create($title, $artist_name, $genre_name, $year, $target_file_url);
 
             if ($uploadResult && $dbQueryResult) {
                 $this->addInfoMessage("Song created.");

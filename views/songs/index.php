@@ -24,6 +24,8 @@
                     echo 0;
                 }?>
             </td>
+            <td><a href="/songs/play/<?=$song['id'] ?>">[Play]</td>
+            <td><a href="/songs/download/<?=$song['id'] ?>">[Download]</td>
             <td><a href="/songs/edit/<?=$song['id'] ?>">[Edit]</td>
             <td><a href="/songs/delete/<?=$song['id'] ?>">[Delete]</td>
         </tr>
