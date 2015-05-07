@@ -1,0 +1,40 @@
+
+--
+-- Dumping data for table `artists`
+--
+
+LOCK TABLES `artists` WRITE;
+/*!40000 ALTER TABLE `artists` DISABLE KEYS */;
+INSERT INTO `artists` VALUES (1,'Pesho'),(2,'Kiro'),(3,'Maria'),(6,'Nakov');
+/*!40000 ALTER TABLE `artists` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Dumping data for table `songs`
+--
+
+LOCK TABLES `books` WRITE;
+/*!40000 ALTER TABLE `songs` DISABLE KEYS */;
+INSERT INTO `books` VALUES (1,'PHP for Dummies',NULL,NULL,NULL),(2,'PHP for Beginners','123-456-789',NULL,1),(3,'PHP Quick Start',NULL,'http://php.net',2);
+/*!40000 ALTER TABLE `songs` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Dumping data for table `users`
+--
+
+LOCK TABLES `users` WRITE;
+/*!40000 ALTER TABLE `users` DISABLE KEYS */;
+/*!40000 ALTER TABLE `users` ENABLE KEYS */;
+UNLOCK TABLES;
+/*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
+
+/*!40101 SET SQL_MODE=@OLD_SQL_MODE */;
+/*!40014 SET FOREIGN_KEY_CHECKS=@OLD_FOREIGN_KEY_CHECKS */;
+/*!40014 SET UNIQUE_CHECKS=@OLD_UNIQUE_CHECKS */;
+/*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
+/*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
+/*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
+/*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
+
+-- Dump completed on 2015-04-24  0:28:38

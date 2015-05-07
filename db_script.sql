@@ -127,7 +127,7 @@ DROP TABLE IF EXISTS `users`;
 CREATE TABLE `users` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `username` varchar(45) NOT NULL,
-  `pass_hash` varchar(45) NOT NULL,
+  `pass_hash` varchar(60) NOT NULL,
   `is_admin` bit(1) NOT NULL DEFAULT b'0',
   PRIMARY KEY (`id`),
   UNIQUE KEY `username_UNIQUE` (`username`)
