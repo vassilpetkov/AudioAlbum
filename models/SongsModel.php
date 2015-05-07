@@ -14,10 +14,22 @@ class SongsModel extends BaseModel {
         return $statement->get_result()->fetch_assoc();
     }
 
+    public function findByTitle($title) {
+        $statement = self::$db->prepare(
+            "SELECT * FROM songs WHERE title = ?");
+        $statement->bind_param("s", $title);
+        $statement->execute();
+        return $statement->get_result()->fetch_assoc();
+    }
+
     public function create($title, $artist_name = null, $genre_name = null, $year = null, $target_file) {
         if ($title == '') {
             return false;
         }
+        if ($this->findByTitle($title)) {
+            return false;
+        }
+
         $artist_id = null;
         $genre_id = null;
         if($artist_name) {
@@ -53,6 +65,14 @@ class SongsModel extends BaseModel {
         return $statement->affected_rows > 0;
     }
 
+    public function deleteByTitle($title) {
+        $statement = self::$db->prepare(
+            "DELETE FROM songs WHERE title = ?");
+        $statement->bind_param("s", $title);
+        $statement->execute();
+        return $statement->affected_rows > 0;
+    }
+
     public function CheckIfArtistExistsCreateAndGetId($artist_name)
     {
         $this->artistsModel = new ArtistsModel();
@@ -77,8 +97,8 @@ class SongsModel extends BaseModel {
             return $genre_id;
         } else {
             $this->genresModel->create($genre_name);
-            $artist = $this->genresModel->findByName($genre_name);
-            $genre_id = $artist['id'];
+            $genre = $this->genresModel->findByName($genre_name);
+            $genre_id = $genre['id'];
             return $genre_id;
         }
     }

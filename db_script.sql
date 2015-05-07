@@ -27,7 +27,8 @@ DROP TABLE IF EXISTS `artists`;
 CREATE TABLE `artists` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `artist_name` varchar(200) NOT NULL,
-  PRIMARY KEY (`id`)
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `artist_name_UNIQUE` (`artist_name`)
 ) ENGINE=InnoDB AUTO_INCREMENT=24 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -41,7 +42,8 @@ DROP TABLE IF EXISTS `genres`;
 CREATE TABLE `genres` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `genre_name` varchar(200) NOT NULL,
-  PRIMARY KEY (`id`)
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `genre_name_UNIQUE` (`genre_name`)
 ) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -62,6 +64,7 @@ CREATE TABLE `songs` (
   `rating_votes` int(20) DEFAULT NULL,
   `rating_score` int(20) DEFAULT NULL,
   PRIMARY KEY (`id`),
+  UNIQUE KEY `title_UNIQUE` (`title`),
   KEY `fk_songs_artists_idx` (`artist_id`),
   CONSTRAINT `fk_songs_artists` FOREIGN KEY (`artist_id`) REFERENCES `artists` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION,
   KEY `fk_songs_genres_idx` (`genre_id`),
@@ -96,10 +99,11 @@ DROP TABLE IF EXISTS `playlists`;
 CREATE TABLE `playlists` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `playlist_name` varchar(200) NOT NULL,
-  `author_id` int(11) NOT NULL,
+  `author_id` int(11) DEFAULT NULL,
   `rating_votes` int(20) DEFAULT NULL,
   `rating_score` int(20) DEFAULT NULL,
   PRIMARY KEY (`id`),
+  UNIQUE KEY `playlist_name_UNIQUE` (`playlist_name`),
   KEY `fk_playlists_users_idx` (`creator_id`),
   CONSTRAINT `fk_playlists_users` FOREIGN KEY (`creator_id`) REFERENCES `users` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION
 ) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8;
