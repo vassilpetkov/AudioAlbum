@@ -20,6 +20,7 @@
                     echo 0;
                 }?>
             </td>
+            <td><a href="/playlists/view/<?=$playlist['id'] ?>">[View]</td>
             <td><a href="/playlists/edit/<?=$playlist['id'] ?>">[Edit]</td>
             <td><a href="/playlists/delete/<?=$playlist['id'] ?>">[Delete]</td>
         </tr>

@@ -20,14 +20,14 @@ $this->soundType = 'audio/webm';
     <source src="<?=$this->song["path"]?>" type="<?=$this->soundType?>">
     Your browser does not support the audio element.
 </audio>
-    <form method="post" action="/songsComments/create">
-        <input type="text" name="author_username" value="<?= $_SESSION['username']; ?>" hidden="true" />
-        <input type="number" name="song_id" value="<?=$this->song["id"]?>" hidden="true" />
-        <label for="comment">Leave a comment:</label>
-        <input type="text" name="comment" id="comment" />
-        <br/>
-        <input type="submit" value="Post">
-    </form>
+<form method="post" action="/songsComments/create">
+    <input type="text" name="author_username" value="<?= $_SESSION['username']; ?>" hidden="true" />
+    <input type="number" name="song_id" value="<?=$this->song["id"]?>" hidden="true" />
+    <label for="comment">Leave a comment:</label>
+    <input type="text" name="comment" id="comment" />
+    <br/>
+    <input type="submit" value="Post">
+</form>
 <?php if ($this->comments) { ?>
     <table>
         <tr>

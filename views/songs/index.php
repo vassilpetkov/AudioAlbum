@@ -7,7 +7,7 @@
         <th>Genre</th>
         <th>Year</th>
         <th>Score</th>
-        <th colspan="2">Action</th>
+        <th colspan="4">Action</th>
     </tr>
     <?php foreach ($this->songs as $song) : ?>
         <tr>

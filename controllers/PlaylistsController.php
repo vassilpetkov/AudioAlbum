@@ -11,9 +11,17 @@ class PlaylistsController extends BaseController {
         $this->playlists = $this->playlistsModel->fetchAll();
     }
 
+    public function view($id) {
+        $this->playlist = $this->playlistsModel->FetchPlaylist($id);
+
+        $this->playlistsCommentsModel = new PlaylistsCommentsModel();
+        $this->comments = $this->playlistsCommentsModel->fetchAllForPlaylist($id);
+    }
+
     public function create() {
         $this->songsModel = new SongsModel();
         $this->songs = $this->songsModel->fetchAll();
+
         if ($this->isPost()) {
             $name = $_POST['name'];
             $author_username = $_POST['author_username'];
