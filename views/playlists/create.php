@@ -5,6 +5,8 @@
     <label for="name">Playlist name:</label>
     <input type="text" name="name" id="name" />
     <br/>
+    <span>Add songs</span>
+    <br/>
     <?php foreach ($this->songs as $song) : ?>
         <label for="song"><?= htmlspecialchars($song['title']); ?></label>
         <input type="checkbox" name="song_ids[]" id="song" value="<?= htmlspecialchars($song['id']); ?>">

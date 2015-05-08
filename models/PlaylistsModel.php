@@ -1,30 +1,19 @@
 <?php
 
 class PlaylistsModel extends BaseModel {
-    public function getAll() {
-        $statement = self::$db->query("SELECT * FROM playlists p LEFT JOIN users u ON p.author_id = u.Id");
+    public function fetchAll() {
+            $statement = self::$db->query(
+                "SELECT p.id, playlist_name, username, rating_votes, rating_score FROM playlists p LEFT JOIN users u ON p.author_id = u.Id");
         return $statement->fetch_all(MYSQLI_ASSOC);
     }
 
-    public function find($id) {
-        $statement = self::$db->prepare(
-            "SELECT * FROM playlists WHERE id = ?");
-        $statement->bind_param("i", $id);
-        $statement->execute();
-        return $statement->get_result()->fetch_assoc();
-    }
-
-    public function findByName($name) {
-        $statement = self::$db->prepare(
-            "SELECT * FROM playlists WHERE playlist_name = ?");
-        $statement->bind_param("s", $name);
-        $statement->execute();
-        return $statement->get_result()->fetch_assoc();
+    public function find($column, $types, $value) {
+        return parent::find("playlists", $column, $types, $value);
     }
 
     public function create($name, $author_username, $song_ids) {
         $this->accountsModel = new AccountsModel();
-        $author_id = $this->accountsModel->find($author_username);
+        $author_id = $this->accountsModel->find("username", "s", $author_username);
 
         if ($name == '') {
             return false;
@@ -35,7 +24,7 @@ class PlaylistsModel extends BaseModel {
         $playlist_statement->bind_param("si", $name, $author_id);
         $playlist_statement->execute();
 
-        $current_playlist = $this->findByName($name);
+        $current_playlist = $this->find("playlist_name", "s", $name);
         $current_playlist_id = $current_playlist['id'];
         $song_statement = self::$db->prepare("INSERT INTO playlists_songs VALUES(?, ?)");
         foreach ($song_ids as $song_id) {
@@ -45,22 +34,7 @@ class PlaylistsModel extends BaseModel {
         return $playlist_statement->affected_rows > 0;
     }
 
-    public function edit($id, $name) {
-        if ($name == '') {
-            return false;
-        }
-        $statement = self::$db->prepare(
-            "UPDATE playlists SET name = ? WHERE id = ?");
-        $statement->bind_param("si", $name, $id);
-        $statement->execute();
-        return $statement->errno == 0;
-    }
-
-    public function delete($id) {
-        $statement = self::$db->prepare(
-            "DELETE FROM playlists WHERE id = ?");
-        $statement->bind_param("i", $id);
-        $statement->execute();
-        return $statement->affected_rows > 0;
+    public function delete($column, $types, $value) {
+        return parent::delete("playlists", $column, $types, $value);
     }
 }

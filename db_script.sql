@@ -136,11 +136,11 @@ DROP TABLE IF EXISTS `songs_comments`;
 CREATE TABLE `songs_comments` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `text` varchar(300) NOT NULL,
-  `user_id` int(11) NOT NULL,
+  `author_id` int(11) NOT NULL,
   `song_id` int(11) NOT NULL,
   PRIMARY KEY (`id`),
-  KEY `fk_song_comments_users_idx` (`user_id`),
-  CONSTRAINT `fk_song_comments_users` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION,
+  KEY `fk_song_comments_users_idx` (`author_id`),
+  CONSTRAINT `fk_song_comments_users` FOREIGN KEY (`author_id`) REFERENCES `users` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION,
   KEY `fk_song_song_comments_songs_idx` (`song_id`),
   CONSTRAINT `fk_comments_songs` FOREIGN KEY (`song_id`) REFERENCES `songs` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION
 ) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8;
@@ -156,11 +156,11 @@ DROP TABLE IF EXISTS `playlists_comments`;
 CREATE TABLE `playlists_comments` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `text` varchar(300) NOT NULL,
-  `user_id` int(11) NOT NULL,
+  `author_id` int(11) NOT NULL,
   `playlist_id` int(11) NOT NULL,
   PRIMARY KEY (`id`),
-  KEY `fk_playlist_comments_users_idx` (`user_id`),
-  CONSTRAINT `fk_playlist_comments_users` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION,
+  KEY `fk_playlist_comments_users_idx` (`author_id`),
+  CONSTRAINT `fk_playlist_comments_users` FOREIGN KEY (`author_id`) REFERENCES `users` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION,
   KEY `fk_playlist_comments_songs_idx` (`playlist_id`),
   CONSTRAINT `fk_playlist_comments_songs` FOREIGN KEY (`playlist_id`) REFERENCES `playlists` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION
 ) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8;

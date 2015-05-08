@@ -8,19 +8,19 @@ class PlaylistsController extends BaseController {
     }
 
     public function index() {
-        $this->playlists = $this->playlistsModel->getAll();
+        $this->playlists = $this->playlistsModel->fetchAll();
     }
 
     public function create() {
         $this->songsModel = new SongsModel();
-        $this->songs = $this->songsModel->getAll();
+        $this->songs = $this->songsModel->fetchAll();
         if ($this->isPost()) {
             $name = $_POST['name'];
             $author_username = $_POST['author_username'];
             $song_ids = $_POST['song_ids'];
             if ($this->playlistsModel->create($name, $author_username, $song_ids)) {
                 $this->addInfoMessage("Playlist created.");
-                //$this->redirect("playlists");
+                $this->redirect("playlists");
             } else {
                 $this->addErrorMessage("Cannot create playlist.");
             }
@@ -38,7 +38,7 @@ class PlaylistsController extends BaseController {
             }
         }
 
-        $this->playlists = $this->playlistsModel->find($id);
+        $this->playlists = $this->playlistsModel->find("id", "i", $id);
         if (!$this->playlist) {
             $this->addErrorMessage("Invalid playlist.");
             $this->redirect("playlists");
@@ -46,7 +46,7 @@ class PlaylistsController extends BaseController {
     }
 
     public function delete($id) {
-        if ($this->playlistsModel->delete($id)) {
+        if ($this->playlistsModel->delete("id", "i", $id)) {
             $this->addInfoMessage("Playlist deleted.");
         } else {
             $this->addErrorMessage("Cannot delete playlist #" . htmlspecialchars($id) . '.');

@@ -9,14 +9,16 @@ class SongsController extends BaseController {
     }
 
     public function index() {
-        $this->songs = $this->songsModel->getAll();
+        $this->songs = $this->songsModel->fetchAll();
     }
 
     public function play($id) {
-        $this->song = $this->songsModel->find($id);
+        $this->song = $this->songsModel->find("id", "i", $id);
+        $this->songsCommentsModel = new SongsCommentsModel();
+        $this->comments = $this->songsCommentsModel->fetchAllForSong($id);
     }
 
-    public  function upload() {
+    public function upload() {
         if ($this->isPost()) {
             $title = $_POST['title'];
             $artist_name = $_POST['artist'];
@@ -49,7 +51,7 @@ class SongsController extends BaseController {
                 $this->redirect("songs/upload");
                 die();
             }
-            if ($this->songsModel->findByTitle($title)) {
+            if ($this->songsModel->find("title", "s", $title)) {
                 $this->addErrorMessage("There is already a song with this title.");
                 $this->redirect("songs/upload");
                 die();
@@ -76,7 +78,7 @@ class SongsController extends BaseController {
                 $this->redirect("songs/upload");
             }
             if ($uploadResult && !$dbQueryResult) {
-                $this->songsModel->deleteByTitle($title);
+                $this->songsModel->delete("title", "s", $title);
                 $this->addErrorMessage("Cannot create song.");
                 $this->redirect("songs/upload");
             }
@@ -84,7 +86,7 @@ class SongsController extends BaseController {
     }
 
     public function download($id) {
-        $song = $this->songsModel->find($id);
+        $song = $this->songsModel->find("id", "i", $id);
         $downloadPath = $str = substr($song["path"], 1);
         if (file_exists($downloadPath)) {
             header('Content-Description: File Transfer');
@@ -119,7 +121,7 @@ class SongsController extends BaseController {
             }
         }
 
-        $this->songs = $this->songsModel->find($id);
+        $this->songs = $this->songsModel->find("id", "i", $id);
         if (!$this->song) {
             $this->addErrorMessage("Invalid song.");
             $this->redirect("songs");
@@ -127,7 +129,7 @@ class SongsController extends BaseController {
     }
 
     public function delete($id) {
-        if ($this->songsModel->delete($id)) {
+        if ($this->songsModel->delete("id", "i", $id)) {
             $this->addInfoMessage("Song deleted.");
         } else {
             $this->addErrorMessage("Cannot delete song #" . htmlspecialchars($id) . '.');

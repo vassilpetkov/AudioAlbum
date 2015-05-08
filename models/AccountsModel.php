@@ -1,17 +1,12 @@
 <?php
 
 class AccountsModel extends BaseModel{
-    public function getAll() {
-        $statement = self::$db->query("SELECT * FROM users");
-        return $statement->fetch_all(MYSQLI_ASSOC);
+    public function fetchAll() {
+        return parent::fetchAll("accounts") ;
     }
 
-    public function find($username) {
-        $statement = self::$db->prepare(
-            "SELECT * FROM users WHERE username = ?");
-        $statement->bind_param("s", $username);
-        $statement->execute();
-        return $statement->get_result()->fetch_assoc();
+    public function find($column, $types, $value) {
+        return parent::find("users", $column, $types, $value);
     }
 
     public function register($username, $password) {
@@ -21,7 +16,7 @@ class AccountsModel extends BaseModel{
         if ($password == '') {
             return false;
         }
-        if ($this->find($username)) {
+        if ($this->find("username", "s", $username)) {
             return false;
         }
 
@@ -31,7 +26,7 @@ class AccountsModel extends BaseModel{
             "INSERT INTO users VALUES(NULL, ?, ?, 0)");
         $statement->bind_param("ss", $username, $hash_pass);
         $statement->execute();
-        return true;
+        return $statement->affected_rows > 0;
     }
 
     public function login($username, $password) {
@@ -42,7 +37,7 @@ class AccountsModel extends BaseModel{
             return false;
         }
 
-        $user = $this->find($username);
+        $user = $this->find("username", "s", $username);
         if (!password_verify($password, $user['pass_hash'])) {
             return false;
         }
@@ -53,28 +48,29 @@ class AccountsModel extends BaseModel{
         if ($username == '') {
             return false;
         }
-        if ($this->find($username)) {
+        if ($this->find("username", "s", $username)) {
             return false;
         }
 
-        $user = $this->find($_SESSION['username']);
+        $user = $this->find("username", "s", $_SESSION['username']);
         $userId = $user['id'];
 
         $statement = self::$db->prepare(
             "UPDATE users SET username = ? WHERE id = ?");
         $statement->bind_param("si", $username, $userId);
         $statement->execute();
-        return true;
+        return $statement->affected_rows > 0;
     }
 
     public function changePassword($oldPassword, $password) {
         if ($password == '') {
             return false;
         }
-        $user = $this->find($_SESSION['username']);
+        $user = $this->find("username", "s", $_SESSION['username']);
         if (!password_verify($oldPassword, $user['pass_hash'])) {
             return false;
         }
+
         $userId = $user['id'];
         $hash_pass = password_hash($password, PASSWORD_BCRYPT);
 
@@ -82,6 +78,6 @@ class AccountsModel extends BaseModel{
             "UPDATE users SET pass_hash = ? WHERE id = ?");
         $statement->bind_param("si", $hash_pass, $userId);
         $statement->execute();
-        return true;
+        return $statement->affected_rows > 0;
     }
 }

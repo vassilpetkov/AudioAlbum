@@ -9,13 +9,13 @@ class GenresController extends BaseController {
     }
 
     public function index() {
-        $this->genres = $this->genresModel->getAll();
+        $this->genres = $this->genresModel->fetchAll();
     }
 
     public function create() {
         if ($this->isPost()) {
             $name = $_POST['name'];
-            if ($this->genresModel->create($name)) {
+            if ($this->genresModel->create("s", $name)) {
                 $this->addInfoMessage("Genre created.");
                 $this->redirect("genres");
             } else {
@@ -27,7 +27,7 @@ class GenresController extends BaseController {
     public function edit($id) {
         if ($this->isPost()) {
             $name = $_POST['name'];
-            if ($this->genresModel->edit($id, $name)) {
+            if ($this->genresModel->edit("si", $id, $name)) {
                 $this->addInfoMessage("Genre edited.");
                 $this->redirect("genres");
             } else {
@@ -35,7 +35,7 @@ class GenresController extends BaseController {
             }
         }
 
-        $this->genres = $this->genresModel->find($id);
+        $this->genres = $this->genresModel->find("id", "i", $id);
         if (!$this->genre) {
             $this->addErrorMessage("Invalid genre.");
             $this->redirect("genres");
@@ -43,7 +43,7 @@ class GenresController extends BaseController {
     }
 
     public function delete($id) {
-        if ($this->genresModel->delete($id)) {
+        if ($this->genresModel->delete("id", "i", $id)) {
             $this->addInfoMessage("Genre deleted.");
         } else {
             $this->addErrorMessage("Cannot delete genre #" . htmlspecialchars($id) . '.');

@@ -9,13 +9,13 @@ class ArtistsController extends BaseController {
     }
 
     public function index() {
-        $this->artists = $this->artistsModel->getAll();
+        $this->artists = $this->artistsModel->fetchAll();
     }
 
     public function create() {
         if ($this->isPost()) {
             $name = $_POST['name'];
-            if ($this->artistsModel->create($name)) {
+            if ($this->artistsModel->create("s", $name)) {
                 $this->addInfoMessage("Artist created.");
                 $this->redirect("artists");
             } else {
@@ -43,7 +43,7 @@ class ArtistsController extends BaseController {
     }
 
     public function delete($id) {
-        if ($this->artistsModel->delete($id)) {
+        if ($this->artistsModel->delete("id", "i", $id)) {
             $this->addInfoMessage("Artist deleted.");
         } else {
             $this->addErrorMessage("Cannot delete artist #" . htmlspecialchars($id) . '.');
