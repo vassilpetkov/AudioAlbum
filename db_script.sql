@@ -99,13 +99,13 @@ DROP TABLE IF EXISTS `playlists`;
 CREATE TABLE `playlists` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `playlist_name` varchar(200) NOT NULL,
-  `author_id` int(11) DEFAULT NULL,
+  `author_id` int(11) NOT NULL,
   `rating_votes` int(20) DEFAULT NULL,
   `rating_score` int(20) DEFAULT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `playlist_name_UNIQUE` (`playlist_name`),
-  KEY `fk_playlists_users_idx` (`creator_id`),
-  CONSTRAINT `fk_playlists_users` FOREIGN KEY (`creator_id`) REFERENCES `users` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION
+  KEY `fk_playlists_users_idx` (`author_id`),
+  CONSTRAINT `fk_playlists_users` FOREIGN KEY (`author_id`) REFERENCES `users` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION
 ) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 

@@ -1,7 +1,6 @@
 <?php
 
 class PlaylistsController extends BaseController {
-    private $playlistsModel;
 
     protected function onInit() {
         $this->title = 'Playlists';
@@ -13,11 +12,15 @@ class PlaylistsController extends BaseController {
     }
 
     public function create() {
+        $this->songsModel = new SongsModel();
+        $this->songs = $this->songsModel->getAll();
         if ($this->isPost()) {
             $name = $_POST['name'];
-            if ($this->playlistsModel->create($name)) {
+            $author_username = $_POST['author_username'];
+            $song_ids = $_POST['song_ids'];
+            if ($this->playlistsModel->create($name, $author_username, $song_ids)) {
                 $this->addInfoMessage("Playlist created.");
-                $this->redirect("playlists");
+                //$this->redirect("playlists");
             } else {
                 $this->addErrorMessage("Cannot create playlist.");
             }
