@@ -68,4 +68,20 @@ abstract class BaseModel
         $statement->execute();
         return $statement->affected_rows > 0;
     }
+
+    public function vote($table , $item, $score) {
+        $songRatingVotes = $item["rating_votes"] + 1;
+        if ($score == 0) {
+            $songRatingScore = $item["rating_score"];
+        }
+        else {
+            $songRatingScore = $item["rating_score"] + $score;
+        }
+
+        $statement = self::$db->prepare(
+            "UPDATE " . $table . " SET rating_votes = ?, rating_score = ? WHERE id = ?");
+        $statement->bind_param("iii", $songRatingVotes, $songRatingScore, $item["id"]);
+        $statement->execute();
+        return $statement->affected_rows > 0;
+    }
 }

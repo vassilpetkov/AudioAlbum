@@ -1,7 +1,7 @@
 <h1>Create New Playlist</h1>
 
 <form method="post" action="/playlists/create">
-    <input type="text" name="author_username" value="<?= $_SESSION['username']; ?>" hidden="true" />
+    <input type="text" name="author_username" value="<?= $_SESSION['username']; ?>" hidden />
     <label for="name">Playlist name:</label>
     <input type="text" name="name" id="name" />
     <br/>

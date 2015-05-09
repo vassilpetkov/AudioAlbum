@@ -56,4 +56,9 @@ class SongsModel extends BaseModel {
     public function delete($column, $types, $value) {
         return parent::delete("songs", $column, $types, $value);
     }
+
+    public function vote($id, $score) {
+        $song = $this->find("id", "i", $id);
+        return parent::vote("songs", $song, $score);
+    }
 }

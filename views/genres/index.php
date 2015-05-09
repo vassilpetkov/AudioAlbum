@@ -3,7 +3,6 @@
     <tr>
         <th>ID</th>
         <th>Name</th>
-        <th>Score</th>
         <th colspan="2">Action</th>
     </tr>
     <?php foreach ($this->genres as $genre) : ?>

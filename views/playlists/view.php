@@ -10,7 +10,7 @@
         <th>Year</th>
         <th colspan="4">Action</th>
     </tr>
-    <?php var_dump($this->playlist[0]["id"]); foreach ($this->playlist as $playlistSong) : ?>
+    <?php foreach ($this->playlist as $playlistSong) : ?>
     <tr>
         <td><?= htmlspecialchars($playlistSong['song_id']) ?></td>
         <td><?= htmlspecialchars($playlistSong['title']) ?></td>

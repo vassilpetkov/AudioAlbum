@@ -12,12 +12,6 @@ class SongsController extends BaseController {
         $this->songs = $this->songsModel->fetchAll();
     }
 
-    public function play($id) {
-        $this->song = $this->songsModel->find("id", "i", $id);
-        $this->songsCommentsModel = new SongsCommentsModel();
-        $this->comments = $this->songsCommentsModel->fetchAllForSong($id);
-    }
-
     public function upload() {
         if ($this->isPost()) {
             $title = $_POST['title'];
@@ -136,5 +130,25 @@ class SongsController extends BaseController {
             $this->addErrorMessage("Maybe it is in use.");
         }
         $this->redirect("songs");
+    }
+
+    public function play($id) {
+        $this->song = $this->songsModel->find("id", "i", $id);
+        $this->songsCommentsModel = new SongsCommentsModel();
+        $this->comments = $this->songsCommentsModel->fetchAllForSong($id);
+    }
+
+    public function vote() {
+        if ($this->isPost()) {
+            $score = $_POST['score'];
+            $song_id = $_POST['song_id'];
+
+            if ($this->songsModel->vote($song_id, $score)) {
+                $this->addInfoMessage("Vote successful.");
+                $this->redirect("songs");
+            } else {
+                $this->addErrorMessage("Vote unsuccessful.");
+            }
+        }
     }
 }

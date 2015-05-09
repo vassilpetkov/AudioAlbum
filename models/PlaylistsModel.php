@@ -10,12 +10,23 @@ class PlaylistsModel extends BaseModel {
     public function fetchPlaylist($value) {
         $statement = self::$db->query(
             "SELECT p.id, s.id AS song_id, playlist_name, title, artist_name, genre_name, year
-FROM playlists p
-LEFT JOIN playlists_songs ps ON ps.playlist_id = p.Id
-LEFT JOIN songs s ON ps.song_id = s.Id
-LEFT JOIN artists a ON s.artist_id = a.Id
-LEFT JOIN genres g ON s.genre_id = g.Id
-WHERE p.id = ".$value);
+                FROM playlists p
+                LEFT JOIN playlists_songs ps ON ps.playlist_id = p.Id
+                LEFT JOIN songs s ON ps.song_id = s.Id
+                LEFT JOIN artists a ON s.artist_id = a.Id
+                LEFT JOIN genres g ON s.genre_id = g.Id
+                WHERE p.id = " . $value);
+        return $statement->fetch_all(MYSQLI_ASSOC);
+    }
+
+    public function fetchHighestRated() {
+        $statement = self::$db->query(
+            "SELECT p.id, playlist_name, username, rating_votes, rating_score
+                FROM playlists p
+                LEFT JOIN users u ON p.author_id = u.Id
+                WHERE rating_votes > 0
+                ORDER BY  rating_score / rating_votes + rating_votes / 10 DESC
+                LIMIT 10");
         return $statement->fetch_all(MYSQLI_ASSOC);
     }
 
@@ -49,5 +60,10 @@ WHERE p.id = ".$value);
 
     public function delete($column, $types, $value) {
         return parent::delete("playlists", $column, $types, $value);
+    }
+
+    public function vote($id, $score) {
+        $playlist = $this->find("id", "i", $id);
+        return parent::vote("playlists", $playlist, $score);
     }
 }

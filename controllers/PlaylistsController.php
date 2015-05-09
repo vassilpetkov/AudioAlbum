@@ -11,13 +11,6 @@ class PlaylistsController extends BaseController {
         $this->playlists = $this->playlistsModel->fetchAll();
     }
 
-    public function view($id) {
-        $this->playlist = $this->playlistsModel->FetchPlaylist($id);
-
-        $this->playlistsCommentsModel = new PlaylistsCommentsModel();
-        $this->comments = $this->playlistsCommentsModel->fetchAllForPlaylist($id);
-    }
-
     public function create() {
         $this->songsModel = new SongsModel();
         $this->songs = $this->songsModel->fetchAll();
@@ -61,5 +54,26 @@ class PlaylistsController extends BaseController {
             $this->addErrorMessage("Maybe it is in use.");
         }
         $this->redirect("playlists");
+    }
+
+    public function view($id) {
+        $this->playlist = $this->playlistsModel->FetchPlaylist($id);
+
+        $this->playlistsCommentsModel = new PlaylistsCommentsModel();
+        $this->comments = $this->playlistsCommentsModel->fetchAllForPlaylist($id);
+    }
+
+    public function vote() {
+        if ($this->isPost()) {
+            $score = $_POST['score'];
+            $playlist_id = $_POST['playlist_id'];
+
+            if ($this->playlistsModel->vote($playlist_id, $score)) {
+                $this->addInfoMessage("Vote successful.");
+                $this->redirect("playlists");
+            } else {
+                $this->addErrorMessage("Vote unsuccessful.");
+            }
+        }
     }
 }
