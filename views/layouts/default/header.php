@@ -2,30 +2,44 @@
 <html>
 
 <head>
-    <link rel="stylesheet" href="/content/styles.css" />
+    <script type="text/javascript" src="/content/jquery-2.1.4.min.js"></script>
+    <script type="text/javascript" src="/content/bootstrap.min.js"></script>
+    <link rel="stylesheet" href="/content/bootstrap.min.css" />
     <title><?php echo htmlspecialchars($this->title) ?></title>
 </head>
 
 <body>
-    <header>
-        <a href="/"><img src="/content/images/site-logo.png"></a>
-        <ul class="menu">
-            <li><a href="/">Home</a></li>
-            <li><a href="/playlists">Playlists</a></li>
-            <li><a href="/genres">Genres</a></li>
-            <li><a href="/songs">Songs</a></li>
-        </ul>
-        <?php if(!$this->isLoggedIn()) : ?>
-            <div id="not-logged-in-header">
-                <a href="/accounts/login">Login</a>
-                <a href="/accounts/register">Register</a>
+    <nav class="navbar navbar-inverse navbar-fixed-top">
+        <div class="container">
+            <div class="navbar-header">
+                <a href="/" class="navbar-brand">Audio Album</a>
+                <button class="navbar-toggle" type="button" data-toggle="collapse" data-target="#navbar-main">
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
             </div>
-        <?php endif; ?>
-        <?php if($this->isLoggedIn()) : ?>
-            <div id="logged-in-header">
-                <span>Hello <a href="/accounts/profile"><?= $_SESSION['username']; ?></a></span>
-                <form action="/accounts/logout"><input type="submit" value="Logout" /></form>
+            <div class="container-fluid">
+                <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-2">
+                    <ul class="nav navbar-nav">
+                        <li><a href="/genres">Genres</a></li>
+                        <li><a href="/playlists">Playlists</a></li>
+                        <li><a href="/songs">Songs</a></li>
+                    </ul>
+                    <ul class="nav navbar-nav navbar-right">
+                        <?php if(!$this->isLoggedIn()) : ?>
+                            <li><a href="/accounts/login">Login</a></li>
+                            <li><a href="/accounts/register">Register</a></li>
+                        <?php endif; ?>
+                        <?php if($this->isLoggedIn()) : ?>
+                            <li><a href="/accounts/profile">Hello <?= $_SESSION['username']; ?></a></li>
+                            <li><a href="/accounts/logout">Logout</a></li>
+                        <?php endif; ?>
+                    </ul>
+                </div>
             </div>
-        <?php endif; ?>
-    </header>
+        </div>
+    </nav>
+    <nav class="navbar navbar-inverse"></nav>
+    <div class="container">
     <?php include_once('views/layouts/messages.php'); ?>

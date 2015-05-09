@@ -1,4 +1,3 @@
-    <footer>(c) 2014 MVC Example</footer>
-</body>
-
+        </div>
+    </body>
 </html>

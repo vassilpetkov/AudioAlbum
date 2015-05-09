@@ -2,7 +2,8 @@
 
 class SongsModel extends BaseModel {
     public function fetchAll() {
-        $statement = self::$db->query("SELECT * FROM songs s LEFT JOIN artists a ON s.artist_id = a.Id LEFT JOIN genres g ON s.genre_id = g.Id");
+        $statement = self::$db->query(
+            "SELECT s.id, title, year, path, rating_votes, rating_score, artist_name, genre_name FROM songs s LEFT JOIN artists a ON s.artist_id = a.Id LEFT JOIN genres g ON s.genre_id = g.Id");
         return $statement->fetch_all(MYSQLI_ASSOC);
     }
 
@@ -12,9 +13,6 @@ class SongsModel extends BaseModel {
 
     public function create($title, $artist_name = null, $genre_name = null, $year = null, $target_file) {
         if ($title == '') {
-            return false;
-        }
-        if ($this->find("title", "s", $title)) {
             return false;
         }
 
@@ -37,17 +35,15 @@ class SongsModel extends BaseModel {
             $genre = $this->genresModel->find("genre_name", "s", $genre_name);
             if ($genre) {
                 $genre_id = $genre['id'];
-                return $genre_id;
             } else {
                 $this->genresModel->create("s", $genre_name);
                 $genre = $this->genresModel->find("genre_name", "s", $genre_name);
                 $genre_id = $genre['id'];
-                return $genre_id;
             }
         }
 
         $statement = self::$db->prepare(
-            "INSERT INTO songs VALUES(NULL, ?, ?, ?, ?, ?, null, null)");
+            "INSERT INTO songs VALUES(NULL, ?, ?, ?, ?, ?, NULL, NULL)");
         $statement->bind_param("siiis", $title, $artist_id, $genre_id, $year, $target_file);
         $statement->execute();
         return $statement->affected_rows > 0;

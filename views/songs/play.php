@@ -14,31 +14,43 @@ if ($extension == "wav") {
 }
 if ($extension == "weba") {
 $this->soundType = 'audio/webm';
-}
-?>
-<audio controls autoplay="autoplay">
+}?>
+
+<audio controls class="center-block">
     <source src="<?=$this->song["path"]?>" type="<?=$this->soundType?>">
     Your browser does not support the audio element.
 </audio>
-<form method="post" action="/songsComments/create">
-    <input type="text" name="author_username" value="<?= $_SESSION['username']; ?>" hidden="true" />
-    <input type="number" name="song_id" value="<?=$this->song["id"]?>" hidden="true" />
-    <label for="comment">Leave a comment:</label>
-    <input type="text" name="comment" id="comment" />
-    <br/>
-    <input type="submit" value="Post">
+<form method="post" action="/songsComments/create" class="form-horizontal">
+    <fieldset>
+        <legend>Leave a comment:</legend>
+        <input type="text" name="author_username" value="<?= $_SESSION['username']; ?>" hidden />
+        <input type="number" name="song_id" value="<?=$this->song["id"]?>" hidden />
+        <div class="form-group">
+            <div class="col-lg-10">
+                <textarea class="form-control" rows="3" name="comment" id="comment"></textarea>
+            </div>
+        </div>
+        <div class="form-group">
+            <button type="submit" class="btn btn-primary">Post</button>
+            <button type="reset" class="btn btn-default">Cancel</button>
+        </div>
+    </fieldset>
 </form>
-<?php if ($this->comments) { ?>
-    <table>
+<?php if ($this->comments) : ?>
+<table class="table table-striped table-hover ">
+    <thead>
+    <tr>
+        <th>User</th>
+        <th>Comment</th>
+    </tr>
+    </thead>
+    <tbody>
+    <?php foreach ($this->comments as $comment) : ?>
         <tr>
-            <th>User</th>
-            <th>Comment</th>
+            <td><?= htmlspecialchars($comment['username']) ?></td>
+            <td><?= htmlspecialchars($comment['text']) ?></td>
         </tr>
-        <?php foreach ($this->comments as $comment) : ?>
-            <tr>
-                <td><?= htmlspecialchars($comment['username']) ?></td>
-                <td><?= htmlspecialchars($comment['text']) ?></td>
-            </tr>
-        <?php endforeach ?>
-    </table>
-<?php } ?>
+    <?php endforeach ?>
+    </tbody>
+</table>
+<?php endif ?>

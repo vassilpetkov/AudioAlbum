@@ -12,76 +12,51 @@ class SongsController extends BaseController {
         $this->songs = $this->songsModel->fetchAll();
     }
 
-    public function upload() {
+    public function create() {
         if ($this->isPost()) {
             $title = $_POST['title'];
             $artist_name = $_POST['artist'];
             $genre_name = $_POST['genre'];
             $year = (int)$_POST['year'];
-            $target_dir = "content/songs/";
-            $target_file = $target_dir . basename($_FILES["fileToUpload"]["name"]);
+            $target_file = "content/songs/" . basename($_FILES["fileToUpload"]["name"]);
             $target_file_url = "/" . $target_file;
-            $fileType = pathinfo($target_file,PATHINFO_EXTENSION);
-            if (file_exists($target_file)) {
-                $this->addErrorMessage("The file already exists.");
-                $this->redirect("songs/upload");
-                die();
-            }
-            if ($_FILES["fileToUpload"]["size"] > 50000000) {
-                $this->addErrorMessage("The file is too large.");
-                $this->redirect("songs/upload");
-                die();
-            }
-            if ($fileType != "mp3" && $fileType != "opus" && $fileType != "wav" && $fileType != "weba"
-                && $fileType != "oog") {
-                $this->addErrorMessage("Only .mp3, .wav, .oog, .weba or .opus files are allowed");
-                $this->redirect("songs/upload");
-                die();
-            }
-            $uploadResult = move_uploaded_file($_FILES["fileToUpload"]["tmp_name"], $target_file);
 
             if (!$title) {
                 $this->addErrorMessage("The title is required.");
-                $this->redirect("songs/upload");
+                $this->redirect("songs/create");
                 die();
             }
             if ($this->songsModel->find("title", "s", $title)) {
                 $this->addErrorMessage("There is already a song with this title.");
-                $this->redirect("songs/upload");
+                $this->redirect("songs/create");
                 die();
             }
             if (!$_FILES["fileToUpload"]["name"]) {
                 $this->addErrorMessage("The file is required.");
-                $this->redirect("songs/upload");
+                $this->redirect("songs/create");
                 die();
             }
 
+            $uploadResult = $this->upload($target_file);
             $dbQueryResult = $this->songsModel->create($title, $artist_name, $genre_name, $year, $target_file_url);
 
             if ($uploadResult && $dbQueryResult) {
                 $this->addInfoMessage("Song created.");
                 $this->redirect("songs");
             }
-            if (!$uploadResult && !$dbQueryResult) {
-                $this->addErrorMessage("Cannot create song.");
-                $this->redirect("songs/upload");
-            }
-            if (!$uploadResult && $dbQueryResult) {
+            else {
                 unlink($_FILES["fileToUpload"]["tmp_name"]);
-                $this->addErrorMessage("Cannot upload song.");
-                $this->redirect("songs/upload");
-            }
-            if ($uploadResult && !$dbQueryResult) {
                 $this->songsModel->delete("title", "s", $title);
                 $this->addErrorMessage("Cannot create song.");
-                $this->redirect("songs/upload");
+                $this->redirect("songs/create");
             }
         }
     }
 
     public function download($id) {
         $song = $this->songsModel->find("id", "i", $id);
-        $downloadPath = $str = substr($song["path"], 1);
+        $downloadPath = substr($song["path"], 1);
+        var_dump($song);
         if (file_exists($downloadPath)) {
             header('Content-Description: File Transfer');
             header('Content-Type: application/octet-stream');
@@ -150,5 +125,29 @@ class SongsController extends BaseController {
                 $this->addErrorMessage("Vote unsuccessful.");
             }
         }
+    }
+
+    private function upload($target_file)
+    {
+        $fileType = pathinfo($target_file, PATHINFO_EXTENSION);
+        if (file_exists($target_file)) {
+            $this->addErrorMessage("The file already exists.");
+            $this->redirect("songs/create");
+            die();
+        }
+        if ($_FILES["fileToUpload"]["size"] > 50000000) {
+            $this->addErrorMessage("The file is too large.");
+            $this->redirect("songs/create");
+            die();
+        }
+        if ($fileType != "mp3" && $fileType != "opus" && $fileType != "wav" && $fileType != "weba"
+            && $fileType != "oog"
+        ) {
+            $this->addErrorMessage("Only .mp3, .wav, .oog, .weba or .opus files are allowed");
+            $this->redirect("songs/create");
+            die();
+        }
+        $uploadResult = move_uploaded_file($_FILES["fileToUpload"]["tmp_name"], $target_file);
+        return $uploadResult;
     }
 }

@@ -63,3 +63,7 @@ ul.error-messages li {
 #not-logged-in-header {
     float: right;
 }
+
+table, th, td {
+     border: 1px solid black;
+}

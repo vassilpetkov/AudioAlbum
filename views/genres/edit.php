@@ -1,12 +1,12 @@
-<h1>Edit Existing Author</h1>
+<h1>Edit Existing Genre</h1>
 
-<?php if ($this->author) { ?>
-<form method="post" action="/authors/edit/<?= $this->author['id'] ?>">
-    Artist name:
+<?php if ($this->genre) : ?>
+<form method="post" action="/genres/edit/<?= $this->genre['id'] ?>">
+    Genre name:
     <input type="text" name="name"
-        value="<?= htmlspecialchars($this->author['name']) ?>" />
+        value="<?= htmlspecialchars($this->genre['name']) ?>" />
     <br/>
     <input type="submit" value="Edit" />
-    <a href="/authors">Cancel</a>
+    <a href="/genres">Cancel</a>
 </form>
-<?php } ?>
+<?php endif ?>
