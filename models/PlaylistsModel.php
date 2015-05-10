@@ -58,6 +58,35 @@ class PlaylistsModel extends BaseModel {
         return $playlist_statement->affected_rows > 0;
     }
 
+    public function edit($id, $name, $song_ids) {
+        if ($name == '') {
+            return false;
+        }
+        if (!$name) {
+            return false;
+        }
+        if (!$song_ids) {
+            return false;
+        }
+
+        $playlist_statement = self::$db->prepare(
+            "UPDATE playlists SET playlist_name = ? WHERE id = ?");
+        $playlist_statement->bind_param("si", $name, $id);
+        $playlist_statement->execute();
+
+        $song_delete_statement = self::$db->prepare("DELETE FROM playlists_songs WHERE playlist_id = ?");
+            $song_delete_statement->bind_param("i", $id);
+            $song_delete_statement->execute();
+
+        $song_insert_statement = self::$db->prepare("INSERT INTO playlists_songs VALUES(?, ?)");
+        foreach ($song_ids as $song_id) {
+            $song_insert_statement->bind_param("ii", $id, $song_id);
+            $song_insert_statement->execute();
+        }
+
+        return $playlist_statement->errno == 0;
+    }
+
     public function delete($column, $types, $value) {
         return parent::delete("playlists", $column, $types, $value);
     }

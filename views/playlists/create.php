@@ -13,13 +13,13 @@
             <div class="form-group">
                 <table class="table table-striped table-hover ">
                     <thead>
-                    <tr>
-                        <th>Title</th>
-                        <th>Artist</th>
-                        <th>Genre</th>
-                        <th>Year</th>
-                        <th>Add</th>
-                    </tr>
+                        <tr>
+                            <th>Title</th>
+                            <th>Artist</th>
+                            <th>Genre</th>
+                            <th>Year</th>
+                            <th>Add</th>
+                        </tr>
                     </thead>
                     <tbody>
                     <?php foreach ($this->songs as $song) : ?>

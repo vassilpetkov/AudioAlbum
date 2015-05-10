@@ -28,13 +28,13 @@
             <td>
                 <form method="post" action="/playlists/vote">
                     <input type="text" name="playlist_id" value="<?= $playlist['id']; ?>" hidden />
-                    <select>
-                        <option name="score" value="0">0</option>
-                        <option name="score" value="1">1</option>
-                        <option name="score" value="2">2</option>
-                        <option name="score" value="3">3</option>
-                        <option name="score" value="4">4</option>
-                        <option name="score" value="5">5</option>
+                    <select name="score">
+                        <option value="0">0</option>
+                        <option value="1">1</option>
+                        <option value="2">2</option>
+                        <option value="3">3</option>
+                        <option value="4">4</option>
+                        <option value="5">5</option>
                     </select>
                     <button type="submit" class="btn btn-primary btn-xs">Vote</button>
                 </form>

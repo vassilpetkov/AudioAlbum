@@ -8,6 +8,7 @@ class SongsCommentsController extends BaseController {
     }
 
     public function create() {
+        $this->authorize();
         if ($this->isPost()) {
             $author_username = $_POST['author_username'];
             $song_id = $_POST['song_id'];

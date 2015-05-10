@@ -45,7 +45,7 @@ abstract class BaseModel
         return $statement->affected_rows > 0;
     }
 
-    public function edit($table, $types, $id, $value) {
+    public function edit($table, $column, $types, $id, $value) {
         if ($value == '') {
             return false;
         }
@@ -54,7 +54,7 @@ abstract class BaseModel
         }
 
         $statement = self::$db->prepare(
-            "UPDATE " . $table . " SET name = ? WHERE id = ?");
+            "UPDATE " . $table . " SET " . $column . " = ? WHERE id = ?");
         $statement->bind_param($types, $value, $id);
         $statement->execute();
         return $statement->errno == 0;
@@ -70,17 +70,15 @@ abstract class BaseModel
     }
 
     public function vote($table , $item, $score) {
-        $songRatingVotes = $item["rating_votes"] + 1;
-        if ($score == 0) {
-            $songRatingScore = $item["rating_score"];
-        }
-        else {
-            $songRatingScore = $item["rating_score"] + $score;
+        $ratingScore = $item["rating_score"];
+        $ratingVotes = $item["rating_votes"] + 1;
+        if ($score != 0) {
+            $ratingScore = $ratingScore + $score;
         }
 
         $statement = self::$db->prepare(
             "UPDATE " . $table . " SET rating_votes = ?, rating_score = ? WHERE id = ?");
-        $statement->bind_param("iii", $songRatingVotes, $songRatingScore, $item["id"]);
+        $statement->bind_param("iii", $ratingVotes, $ratingScore, $item["id"]);
         $statement->execute();
         return $statement->affected_rows > 0;
     }

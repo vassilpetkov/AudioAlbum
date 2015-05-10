@@ -13,6 +13,7 @@ class SongsController extends BaseController {
     }
 
     public function create() {
+        $this->authorize();
         if ($this->isPost()) {
             $title = $_POST['title'];
             $artist_name = $_POST['artist'];
@@ -79,6 +80,7 @@ class SongsController extends BaseController {
     }
 
     public function edit($id) {
+        $this->authorizeAdmin();
         if ($this->isPost()) {
             $name = $_POST['name'];
 
@@ -98,6 +100,7 @@ class SongsController extends BaseController {
     }
 
     public function delete($id) {
+        $this->authorizeAdmin();
         if ($this->songsModel->delete("id", "i", $id)) {
             $this->addInfoMessage("Song deleted.");
         } else {
@@ -114,6 +117,7 @@ class SongsController extends BaseController {
     }
 
     public function vote() {
+        $this->authorize();
         if ($this->isPost()) {
             $score = $_POST['score'];
             $song_id = $_POST['song_id'];
@@ -140,6 +144,7 @@ class SongsController extends BaseController {
 
     private function upload($target_file)
     {
+        $this->authorize();
         $fileType = pathinfo($target_file, PATHINFO_EXTENSION);
         if (file_exists($target_file)) {
             $this->addErrorMessage("The file already exists.");

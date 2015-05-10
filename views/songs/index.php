@@ -58,23 +58,24 @@
             <td>
                 <form method="post" action="/songs/vote">
                     <input type="text" name="song_id" value="<?= $song['id']; ?>" hidden />
-                    <select>
-                        <option name="score" value="0">0</option>
-                        <option name="score" value="1">1</option>
-                        <option name="score" value="2">2</option>
-                        <option name="score" value="3">3</option>
-                        <option name="score" value="4">4</option>
-                        <option name="score" value="5">5</option>
+                    <select name="score">
+                        <option value="0">0</option>
+                        <option value="1">1</option>
+                        <option value="2">2</option>
+                        <option value="3">3</option>
+                        <option value="4">4</option>
+                        <option value="5">5</option>
                     </select>
                     <button type="submit" class="btn btn-primary btn-xs">Vote</button>
                 </form>
             </td>
-            <?php if (isset($_SESSION['isAdmin'])) :?>
                 <td>
+                    <a href="/songs/download/<?=$song['id'] ?>" class="btn btn-default btn-xs">Download</a>
+                    <?php if (isset($_SESSION['isAdmin'])) :?>
                     <a href="/songs/edit/<?=$song['id'] ?>" class="btn btn-default btn-xs">Edit</a>
                     <a href="/songs/delete/<?=$song['id'] ?> " class="btn btn-default btn-xs">Delete</a>
+                    <?php endif?>
                 </td>
-            <?php endif?>
         </tr>
     <?php endforeach ?>
     </tbody>

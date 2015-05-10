@@ -8,6 +8,7 @@ class PlaylistsCommentsController extends BaseController {
     }
 
     public function create() {
+        $this->authorize();
         if ($this->isPost()) {
             $author_username = $_POST['author_username'];
             $playlist_id = $_POST['playlist_id'];

@@ -12,6 +12,7 @@ class PlaylistsController extends BaseController {
     }
 
     public function create() {
+        $this->authorize();
         $this->songsModel = new SongsModel();
         $this->songs = $this->songsModel->fetchAll();
 
@@ -29,9 +30,23 @@ class PlaylistsController extends BaseController {
     }
 
     public function edit($id) {
+        $this->authorizeAdmin();
+
+        $this->songsModel = new SongsModel();
+        $this->songs = $this->songsModel->fetchAll();
+
+        $this->playlist = $this->playlistsModel->FetchPlaylist($id);
+        $playlistSongIds = [];
+        foreach ($this->playlist as $playlistSong) {
+            array_push($playlistSongIds ,$playlistSong["song_id"]);
+        }
+        $this->playlistSongIds = $playlistSongIds;
+
         if ($this->isPost()) {
             $name = $_POST['name'];
-            if ($this->playlistsModel->edit($id, $name)) {
+            $song_ids = $_POST['song_ids'];
+            var_dump($id);
+            if ($this->playlistsModel->edit($id, $name, $song_ids)) {
                 $this->addInfoMessage("Playlist edited.");
                 $this->redirect("playlists");
             } else {
@@ -47,6 +62,7 @@ class PlaylistsController extends BaseController {
     }
 
     public function delete($id) {
+        $this->authorizeAdmin();
         if ($this->playlistsModel->delete("id", "i", $id)) {
             $this->addInfoMessage("Playlist deleted.");
         } else {
@@ -64,6 +80,7 @@ class PlaylistsController extends BaseController {
     }
 
     public function vote() {
+        $this->authorize();
         if ($this->isPost()) {
             $score = $_POST['score'];
             $playlist_id = $_POST['playlist_id'];

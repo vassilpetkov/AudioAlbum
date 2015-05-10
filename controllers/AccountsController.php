@@ -69,11 +69,13 @@ class AccountsController extends BaseController {
     }
 
     public function profile() {
-
+        $this->authorize();
     }
 
     public function logout() {
+        $this->authorize();
         unset($_SESSION['username']);
+        unset ($_SESSION['isAdmin']);
         $this->addInfoMessage("Logged out.");
         $this->redirect("home");
     }

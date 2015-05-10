@@ -13,8 +13,8 @@ class GenresModel extends BaseModel {
         return parent::create("genres", $types, $value);
     }
 
-    public function edit($types, $id, $value) {
-        return parent::edit("genres", $types, $id, $value);
+    public function edit($column, $types, $id, $value) {
+        return parent::edit("genres", $column, $types, $id, $value);
     }
 
     public function delete($column, $types, $value) {

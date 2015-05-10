@@ -38,6 +38,9 @@ class AccountsModel extends BaseModel{
         }
 
         $user = $this->find("username", "s", $username);
+        if ($user['is_admin']) {
+            $_SESSION['isAdmin'] = $user['is_admin'];
+        }
         if (!password_verify($password, $user['pass_hash'])) {
             return false;
         }
