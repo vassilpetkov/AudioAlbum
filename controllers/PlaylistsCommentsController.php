@@ -50,7 +50,6 @@ class PlaylistsCommentsController extends BaseController {
             $this->addInfoMessage("Comment deleted.");
         } else {
             $this->addErrorMessage("Cannot delete comment #" . htmlspecialchars($id) . '.');
-            $this->addErrorMessage("Maybe it is in use.");
         }
         $this->redirect("playlists/view/" . $this->playlistComment['playlist_id']);
     }

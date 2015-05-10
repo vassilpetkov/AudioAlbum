@@ -42,7 +42,7 @@
             <?php if (isset($_SESSION['isAdmin'])) :?>
             <td>
                 <a href="/playlists/edit/<?=$playlist['id'] ?>" class="btn btn-primary btn-xs">Edit</a>
-                <a href="/playlists/delete/<?=$playlist['id'] ?> " class="btn btn-primary btn-xs">Delete</a>
+                <a href="/playlists/delete/<?=$playlist['id'] ?>" class="btn btn-primary btn-xs">Delete</a>
             </td>
             <?php endif?>
         </tr>

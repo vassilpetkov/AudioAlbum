@@ -50,7 +50,6 @@ class SongsCommentsController extends BaseController {
             $this->addInfoMessage("Comment deleted.");
         } else {
             $this->addErrorMessage("Cannot delete comment #" . htmlspecialchars($id) . '.');
-            $this->addErrorMessage("Maybe it is in use.");
         }
         $this->redirect("songs/play/" . $this->songComment['song_id']);
     }

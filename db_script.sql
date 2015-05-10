@@ -83,7 +83,7 @@ CREATE TABLE `playlists_songs` (
   `playlist_id` int(11) NOT NULL,
   `song_id` int(11) NOT NULL,
   KEY `fk_playlists_playlists_songs_idx` (`playlist_id`),
-  CONSTRAINT `fk_playlists_playlists_songs` FOREIGN KEY (`playlist_id`) REFERENCES `playlists` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION,
+  CONSTRAINT `fk_playlists_playlists_songs` FOREIGN KEY (`playlist_id`) REFERENCES `playlists` (`id`) ON DELETE CASCADE ON UPDATE NO ACTION,
   KEY `fk_songs_playlists_songs_idx` (`song_id`),
   CONSTRAINT `fk_songs_playlists_songs` FOREIGN KEY (`song_id`) REFERENCES `songs` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION
 ) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8;
@@ -142,7 +142,7 @@ CREATE TABLE `songs_comments` (
   KEY `fk_song_comments_users_idx` (`author_id`),
   CONSTRAINT `fk_song_comments_users` FOREIGN KEY (`author_id`) REFERENCES `users` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION,
   KEY `fk_song_song_comments_songs_idx` (`song_id`),
-  CONSTRAINT `fk_comments_songs` FOREIGN KEY (`song_id`) REFERENCES `songs` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION
+  CONSTRAINT `fk_comments_songs` FOREIGN KEY (`song_id`) REFERENCES `songs` (`id`) ON DELETE CASCADE ON UPDATE NO ACTION
 ) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -162,6 +162,6 @@ CREATE TABLE `playlists_comments` (
   KEY `fk_playlist_comments_users_idx` (`author_id`),
   CONSTRAINT `fk_playlist_comments_users` FOREIGN KEY (`author_id`) REFERENCES `users` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION,
   KEY `fk_playlist_comments_songs_idx` (`playlist_id`),
-  CONSTRAINT `fk_playlist_comments_songs` FOREIGN KEY (`playlist_id`) REFERENCES `playlists` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION
+  CONSTRAINT `fk_playlist_comments_songs` FOREIGN KEY (`playlist_id`) REFERENCES `playlists` (`id`) ON DELETE CASCADE ON UPDATE NO ACTION
 ) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;

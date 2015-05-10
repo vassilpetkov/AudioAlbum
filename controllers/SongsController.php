@@ -46,7 +46,7 @@ class SongsController extends BaseController {
                 $this->redirect("songs");
             }
             else {
-                unlink($_FILES["fileToUpload"]["tmp_name"]);
+                unlink($_FILES["fileToUpload"]["name"]);
                 $this->songsModel->delete("title", "s", $title);
                 $this->addErrorMessage("Cannot create song.");
                 $this->redirect("songs/create");
@@ -55,7 +55,7 @@ class SongsController extends BaseController {
     }
 
     public function download($id) {
-        $song = $this->songsModel->find("id", "i", $id);
+        $song = $this->songsModel->find("s.id", "i", $id);
         $downloadPath = substr($song["path"], 1);
         var_dump($song);
         if (file_exists($downloadPath)) {
@@ -81,26 +81,50 @@ class SongsController extends BaseController {
 
     public function edit($id) {
         $this->authorizeAdmin();
-        if ($this->isPost()) {
-            $name = $_POST['name'];
 
-            if ($this->songsModel->edit($id, $name)) {
-                $this->addInfoMessage("Song edited.");
-                $this->redirect("songs");
-            } else {
-                $this->addErrorMessage("Cannot edit song.");
-            }
-        }
-
-        $this->songs = $this->songsModel->find("id", "i", $id);
+        $this->song = $this->songsModel->find("s.id", "i", $id);
         if (!$this->song) {
             $this->addErrorMessage("Invalid song.");
             $this->redirect("songs");
+        }
+
+        if ($this->isPost()) {
+            $title = $_POST['title'];
+            $artist_name = $_POST['artist'];
+            $genre_name = $_POST['genre'];
+            $year = (int)$_POST['year'];
+
+            if ($this->songsModel->find("title", "s", $title)) {
+                $this->addErrorMessage("There is already a song with this title.");
+                $this->redirect("songs/edit" . $this->song["id"]);
+                die();
+            }
+
+            if (!$_FILES["fileToUpload"]["name"]) {
+                if ($this->songsModel->edit($id, $title, $artist_name, $genre_name, $year, $this->song["path"])) {
+                    $this->addInfoMessage("Song edited.");
+                    $this->redirect("songs");
+                } else {
+                    $this->addErrorMessage("Cannot edit song.");
+                }
+            }
+            else {
+                $target_file = "content/songs/" . basename($_FILES["fileToUpload"]["name"]);
+                $target_file_url = "/" . $target_file;
+                $this->upload($target_file);
+                if ($this->songsModel->edit($id, $title, $artist_name, $genre_name, $year, $target_file_url)) {
+                    $this->addInfoMessage("Song edited.");
+                    $this->redirect("songs");
+                } else {
+                    $this->addErrorMessage("Cannot edit song.");
+                }
+            }
         }
     }
 
     public function delete($id) {
         $this->authorizeAdmin();
+
         if ($this->songsModel->delete("id", "i", $id)) {
             $this->addInfoMessage("Song deleted.");
         } else {
@@ -111,7 +135,7 @@ class SongsController extends BaseController {
     }
 
     public function play($id) {
-        $this->song = $this->songsModel->find("id", "i", $id);
+        $this->song = $this->songsModel->find("s.id", "i", $id);
         $this->songsCommentsModel = new SongsCommentsModel();
         $this->comments = $this->songsCommentsModel->fetchAllForSong($id);
     }

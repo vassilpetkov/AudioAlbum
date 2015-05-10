@@ -45,7 +45,6 @@ class PlaylistsController extends BaseController {
         if ($this->isPost()) {
             $name = $_POST['name'];
             $song_ids = $_POST['song_ids'];
-            var_dump($id);
             if ($this->playlistsModel->edit($id, $name, $song_ids)) {
                 $this->addInfoMessage("Playlist edited.");
                 $this->redirect("playlists");
