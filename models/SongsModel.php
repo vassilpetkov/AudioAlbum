@@ -7,6 +7,37 @@ class SongsModel extends BaseModel {
         return $statement->fetch_all(MYSQLI_ASSOC);
     }
 
+    public function fetchFilteredSongs($song, $playlist, $genre) {
+        $query = "SELECT s.id AS id, title, playlist_name, artist_name, genre_name, year, s.rating_score, s.rating_votes
+                FROM songs s
+                LEFT JOIN playlists_songs ps ON ps.song_id = s.Id
+                LEFT JOIN playlists p ON ps.playlist_id = p.Id
+                LEFT JOIN artists a ON s.artist_id = a.Id
+                LEFT JOIN genres g ON s.genre_id = g.Id
+                WHERE ";
+        if ($song) {
+            $song = '"%' . $song . '%"';
+            $query = $query .'title LIKE ' . $song;
+        }
+        if ($song && $playlist || $song && $genre) {
+            $query = $query." AND ";
+        }
+        if ($playlist) {
+            $playlist = '"%' . $playlist . '%"';
+            $query = $query."playlist_name LIKE " . $playlist;
+        }
+        if ($playlist && $genre) {
+            $query = $query." AND ";
+        }
+        if ($genre) {
+            $genre = '"%' . $genre . '%"';
+            $query = $query."genre_name LIKE " . $genre;
+        }
+        var_dump($query);
+        $statement = self::$db->query($query);
+        return $statement->fetch_all(MYSQLI_ASSOC);
+    }
+
     public function find($column, $types, $value) {
         return parent::find("songs", $column, $types, $value);
     }

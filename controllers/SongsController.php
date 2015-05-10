@@ -127,6 +127,17 @@ class SongsController extends BaseController {
         }
     }
 
+    public function filter() {
+        $song = $_POST['song'];
+        $playlist = $_POST['playlist'];
+        $genre = $_POST['genre'];
+        if (!$_POST['song'] && !$_POST['playlist'] && !$_POST['genre']) {
+            $this->addErrorMessage("No filter values detected.");
+            die();
+        }
+        $this->songs = $this->songsModel->FetchFilteredSongs($song, $playlist, $genre);
+    }
+
     private function upload($target_file)
     {
         $fileType = pathinfo($target_file, PATHINFO_EXTENSION);

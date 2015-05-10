@@ -1,6 +1,34 @@
 <div class="page-header">
     <h1>List of Songs</h1>
 </div>
+<form action="/songs/filter" method="post" class="form-horizontal">
+    <fieldset>
+        <legend>Filter songs</legend>
+        <div class="form-group">
+            <label for="song" class="col-lg-2 control-label">Song name:</label>
+            <div class="col-lg-10">
+                <input type="text" class="form-control" id="song" name="song" placeholder="Song name">
+            </div>
+        </div>
+        <div class="form-group">
+            <label for="playlist" class="col-lg-2 control-label">Playlist name:</label>
+            <div class="col-lg-10">
+                <input type="text" class="form-control" id="playlist" name="playlist" placeholder="Playlist name">
+            </div>
+        </div>
+        <div class="form-group">
+            <label for="genre" class="col-lg-2 control-label">Genre name:</label>
+            <div class="col-lg-10">
+                <input type="text" class="form-control" id="genre" name="genre" placeholder="Genre name">
+            </div>
+        </div>
+        <div class="form-group">
+            <div class="col-lg-10 col-lg-offset-2">
+                <button type="submit" class="btn btn-primary">Filter</button>
+            </div>
+        </div>
+    </fieldset>
+</form>
 <a href="/songs/create" class="btn btn-primary">Upload new song</a>
 <table class="table table-striped table-hover ">
     <thead>
