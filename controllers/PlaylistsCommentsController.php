@@ -21,4 +21,37 @@ class PlaylistsCommentsController extends BaseController {
             }
         }
     }
+
+    public function edit($id) {
+        $this->authorizeAdmin();
+
+        $this->playlistComment = $this->playlistsCommentsModel->find("id", "i", $id);
+        if (!$this->playlistComment) {
+            $this->addErrorMessage("Invalid comment.");
+            $this->redirect("playlists/view/" . $this->playlistComment['playlist_id']);
+        }
+
+        if ($this->isPost()) {
+            $text = $_POST['text'];
+            if ($this->playlistsCommentsModel->edit("text", "si", $id, $text)) {
+                $this->addInfoMessage("Comment edited.");
+                $this->redirect("playlists/view/" . $this->playlistComment['playlist_id']);
+            } else {
+                $this->addErrorMessage("Cannot edit comment.");
+            }
+        }
+    }
+
+    public function delete($id) {
+        $this->authorizeAdmin();
+
+        $this->playlistComment = $this->playlistsCommentsModel->find("id", "i", $id);
+        if ($this->playlistsCommentsModel->delete("id", "i", $id)) {
+            $this->addInfoMessage("Comment deleted.");
+        } else {
+            $this->addErrorMessage("Cannot delete comment #" . htmlspecialchars($id) . '.');
+            $this->addErrorMessage("Maybe it is in use.");
+        }
+        $this->redirect("playlists/view/" . $this->playlistComment['playlist_id']);
+    }
 }

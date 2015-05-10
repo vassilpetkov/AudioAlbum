@@ -7,6 +7,10 @@ class PlaylistsCommentsModel extends BaseModel{
         return $statement->fetch_all(MYSQLI_ASSOC);
     }
 
+    public function find($column, $types, $value) {
+        return parent::find("playlists_comments", $column, $types, $value);
+    }
+
     public function create($author_username, $playlist_id, $comment) {
         if ($comment == '') {
             return false;
@@ -24,5 +28,13 @@ class PlaylistsCommentsModel extends BaseModel{
         $statement->bind_param("sii", $comment, $author_id, $playlist_id);
         $statement->execute();
         return $statement->affected_rows > 0;
+    }
+
+    public function edit($column, $types, $id, $value) {
+        return parent::edit("playlists_comments", $column, $types, $id, $value);
+    }
+
+    public function delete($column, $types, $value) {
+        return parent::delete("playlists_comments", $column, $types, $value);
     }
 }

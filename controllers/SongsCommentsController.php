@@ -21,4 +21,37 @@ class SongsCommentsController extends BaseController {
             }
         }
     }
+
+    public function edit($id) {
+        $this->authorizeAdmin();
+
+        $this->songComment = $this->songsCommentsModel->find("id", "i", $id);
+        if (!$this->songComment) {
+            $this->addErrorMessage("Invalid comment.");
+            $this->redirect("songs/play/" . $this->songComment['song_id']);
+        }
+
+        if ($this->isPost()) {
+            $text = $_POST['text'];
+            if ($this->songsCommentsModel->edit("text", "si", $id, $text)) {
+                $this->addInfoMessage("Comment edited.");
+                $this->redirect("songs/play/" . $this->songComment['song_id']);
+            } else {
+                $this->addErrorMessage("Cannot edit comment.");
+            }
+        }
+    }
+
+    public function delete($id) {
+        $this->authorizeAdmin();
+
+        $this->songComment = $this->songsCommentsModel->find("id", "i", $id);
+        if ($this->songsCommentsModel->delete("id", "i", $id)) {
+            $this->addInfoMessage("Comment deleted.");
+        } else {
+            $this->addErrorMessage("Cannot delete comment #" . htmlspecialchars($id) . '.');
+            $this->addErrorMessage("Maybe it is in use.");
+        }
+        $this->redirect("songs/play/" . $this->songComment['song_id']);
+    }
 }

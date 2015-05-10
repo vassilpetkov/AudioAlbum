@@ -14,8 +14,8 @@
             <td><?= htmlspecialchars($genre['genre_name']) ?></td>
             <?php if (isset($_SESSION['isAdmin'])) :?>
             <td>
-                <a href="/genres/edit/<?=$genre['id'] ?>" class="btn btn-default btn-xs">Edit</a>
-                <a href="/genres/delete/<?=$genre['id'] ?>" class="btn btn-default btn-xs">Delete</a>
+                <a href="/genres/edit/<?=$genre['id'] ?>" class="btn btn-primary btn-xs">Edit</a>
+                <a href="/genres/delete/<?=$genre['id'] ?>" class="btn btn-primary btn-xs">Delete</a>
             </td>
             <?php endif?>
         </tr>

@@ -7,6 +7,10 @@ class SongsCommentsModel extends BaseModel{
         return $statement->fetch_all(MYSQLI_ASSOC);
     }
 
+    public function find($column, $types, $value) {
+        return parent::find("songs_comments", $column, $types, $value);
+    }
+
     public function create($author_username, $song_id, $comment) {
         if ($comment == '') {
             return false;
@@ -25,4 +29,13 @@ class SongsCommentsModel extends BaseModel{
         $statement->execute();
         return $statement->affected_rows > 0;
     }
+
+    public function edit($column, $types, $id, $value) {
+        return parent::edit("songs_comments", $column, $types, $id, $value);
+    }
+
+    public function delete($column, $types, $value) {
+        return parent::delete("songs_comments", $column, $types, $value);
+    }
+
 }

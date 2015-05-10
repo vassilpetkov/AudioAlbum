@@ -70,10 +70,10 @@
                 </form>
             </td>
                 <td>
-                    <a href="/songs/download/<?=$song['id'] ?>" class="btn btn-default btn-xs">Download</a>
+                    <a href="/songs/download/<?=$song['id'] ?>" class="btn btn-primary btn-xs">Download</a>
                     <?php if (isset($_SESSION['isAdmin'])) :?>
-                    <a href="/songs/edit/<?=$song['id'] ?>" class="btn btn-default btn-xs">Edit</a>
-                    <a href="/songs/delete/<?=$song['id'] ?> " class="btn btn-default btn-xs">Delete</a>
+                    <a href="/songs/edit/<?=$song['id'] ?>" class="btn btn-primary btn-xs">Edit</a>
+                    <a href="/songs/delete/<?=$song['id'] ?> " class="btn btn-primary btn-xs">Delete</a>
                     <?php endif?>
                 </td>
         </tr>

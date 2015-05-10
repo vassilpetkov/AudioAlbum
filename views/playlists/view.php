@@ -79,6 +79,12 @@
             <tr>
                 <td><?= htmlspecialchars($comment['username']) ?></td>
                 <td><?= htmlspecialchars($comment['text']) ?></td>
+                <?php if (isset($_SESSION['isAdmin'])) :?>
+                    <td>
+                        <a href="/playlistsComments/edit/<?=$comment['id'] ?>" class="btn btn-primary btn-xs">Edit</a>
+                        <a href="/playlistsComments/delete/<?=$comment['id'] ?> " class="btn btn-primary btn-xs">Delete</a>
+                    </td>
+                <?php endif?>
             </tr>
         <?php endforeach ?>
         </tbody>
